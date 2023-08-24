@@ -1,0 +1,17 @@
+# Ignore database files
+*.db
+*.sqlite3
+*.sqlite
+db.sqlite3
+
+# For some reason this works again?
+# I also can't trace files correctly for some reason?
+# I'm not sure what happened, but it can build
+# properly now with NO migration files, so yay!
+**/migrations/
+
+# Ignore Python cache files
+**/__pycache__/
+
+# Ignore IDE files
+.idea/

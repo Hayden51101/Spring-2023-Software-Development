@@ -1,0 +1,85 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<!-- Add additional CSS in static file -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+
+<h1>Questions</h1>
+<div class="row">
+  <div class="col-md">
+    <div class="card card body">
+      <table class="table">
+        <tr>
+          <th>ID</th>
+          <th>Question</th>
+          <th>Type</th>
+          <th>Answer</th>
+          <th>Options</th>
+          <th>Hint</th>
+          <th>Tags</th>
+          <th>Delete</th>
+          <th>Edit</th>
+          <th>Select</th>
+          <th><label><input type="checkbox" onclick="for(c in document.getElementsByName('selectedQues')) document.getElementsByName('selectedQues').item(c).checked = this.checked"> Select All For Export</label></th>
+        </tr>
+
+  {% for question in ques %}
+<tr>
+  <p> 
+    <td class="text-left"> {{question.id}} </td>
+    <td class="text-left"> {{question.stem}} </td>
+    <td class="text-left"> {% if question.type == 0 %} MC 
+      {% elif question.type == 1 %} PMC 
+      {% elif question.type == 2 %} PP 
+      {% endif %}</td>
+      <td class="text-left">
+        {% for o in question.correctOption.all %}
+          {{o.content}}{% if question.type == 1 %}({{o.orderForPerm}}){% endif %} <p></p>
+      {% endfor %} </td>
+    <td class="text-left">
+      {% for o in question.options.all %}
+        {{o.content}} <p></p>
+      {% endfor %}
+    </td>
+    <td class="text-left"> {{question.explain}} </td>
+    <td class="text-left">
+    {% for x in question.tag.all %}
+      {{x.tag}} <p></p>
+    {% endfor %}
+    {% comment %}{% endcomment %}
+  </td>
+    <td class="text-center"> <a href="{% url 'delete' question.id %}">delete</a> </td>
+    <td class="text-center"> <a href="{% url 'edit' question.id %}">edit</a> </td>
+    <form action="{% url 'export_xcl'  %}" method="post">
+      {%csrf_token%}
+      <td class="text-center"> <div class="form-check">
+      <input type="checkbox" value= "{{question.id}}" 
+              id=question name="selectedQues"></input>
+            </div>
+          </td>
+  </p>
+</tr>
+
+{% endfor %}
+</table>
+</div>
+</div>
+</div>
+
+<p></p>
+<button><a href="add/">Add Question</a></button>
+<p></p>
+<button><a href="{% url 'importing'  %}">Import</a></button>
+<button type ="submit">Export</button>
+
+
+</form>
+<p></p>
+<br>
+<p></p>
+<br>
+<p></p>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+<h1>Import Questions</h1>
+<h3>File has to be an Excel (.xls) file.</h3>
+<form action="import_xcl/" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type = "file" name = "my_file"/>
+    <p></p>
+    <button type = "submit">Import</button>
+
+ </form>
+{% if messages %}
+    {% for message in messages %}
+      {% if 'excel' in message.tags %}
+        <div class="{{ message.error }}"><font color="Red">{{ message }}</font></div>
+      {% endif %}
+    {% endfor %}
+{% endif %}
+ <p></p>
+ <form action={% url 'questionPage' %} method="link">
+    <button type="submit">Back</button>
+  </form>
+
+</div>
+</div>
+{% endblock %}

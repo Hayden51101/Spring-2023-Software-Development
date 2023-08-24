@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+
+{% block content %}
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+<h1>Welcome {{name}}!</h1>
+<h3>Classes</h3>
+    
+<ul class="list-group">
+  {% for class in classes %}
+    <li class="list-group-item"><a href="{{ class.get_absolute_url }}" > {{class}} </a></li>
+  {% endfor %}
+</ul>
+<p></p>
+<br>
+<p></p>
+<br>
+<p></p>
+</div>
+</div>
+{% endblock %}

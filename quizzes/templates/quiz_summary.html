@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+<div style="text-align: center;">
+    <div style="display: inline-block; text-align: left;">
+<html>
+<head>
+    <title>Quiz Summary</title>
+</head>
+<body>
+    <h1>Quiz Summary</h1>
+    <p>Quiz Name: {{ quiz.name }}</p>
+    <p>Start Time: {{ quiz.start_time }}</p>
+    <p>End Time: {{ quiz.end_time }}</p>
+    <p>Passing Threshold: {{ quiz.passingThreshold }}</p>
+    <h2>Questions:</h2>
+    <ul>
+        {% for question in questions %}
+            <li>{{ question.stem }}</li>
+        {% endfor %}
+    </ul>
+    <form action={% url 'index' %} method="link">
+        <button type="submit">Return</button>
+    </form>
+</body>
+</html>
+<p></p>
+<br>
+<p></p>
+<br>
+<p></p>
+</div>
+</div>
+{% endblock %}

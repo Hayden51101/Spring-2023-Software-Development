@@ -1,0 +1,59 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div style="text-align: center;">
+  <div style="display: inline-block; text-align: left;">
+
+{% if error == "MMChoices" %}
+  <p>INCORRECT NUMBER OF CHOICES SELECTED</p>
+{% endif %}
+
+<h1>{{ name }}</h1>
+
+  <ol>
+    {% for ques in questions %}
+      <h3>{{ forloop.counter }}) {{ ques.stem }}</h3>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="card card body">
+            <table class="table">
+              <tr>
+              {% for o in ques.correctOption.all %}
+                {% if ques.correctOption.count > 1 %}<th>Answer {{ forloop.counter }}</th>{% endif %}
+              {% endfor %}
+            </tr>
+
+          {% for o in ques.order %}
+          <form action="{% url 'submitQuiz' quiz_id %}" method="post">
+            {%csrf_token%}
+          <tr>
+            {% for opt in ques.correctOption.all %}
+            <td><label><input type="checkbox" value= "{{o.id}}:{{opt.id}}"id=o name="selectedOpt">{{ o }}</label></td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+              
+            </table>
+          </div>
+          </div>
+          </div>
+    {% endfor %}
+  </ol>
+{% if not user_is_teacher %}
+  <button type ="submit">Submit</button>
+{% endif %}
+</form>
+{% if user_is_teacher %}
+<form action={% url 'index' %} method="link">
+  <button type="submit">Home</button>
+</form>
+{% endif %}
+<p></p>
+<br>
+<p></p>
+<br>
+<p></p>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>{{user}}'s Classes</h1>
+
+<ul>
+  
+    {% for class in classes %}
+    <li>
+      <p> 
+        <a href="{{ class.get_absolute_url }}" > {{class}} </a>
+      </p>
+    </li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

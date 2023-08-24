@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% block title %}<title>Quizzinator</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Add additional CSS in static file -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+    
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav_items"><a href="{% url 'index' %}" class="nav-link1">Home</a></li>
+                    {% if user.is_teacher %}
+                    <li class="nav_items"><a href="{% url 'questionPage' %}" class="nav-link1">Questions</a></li>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        {% if user.is_teacher %}
+                        <li class="nav_items"><a class="nav-link1" href="{% url 'adminViewChange' view_id="student" %}">View as Student</a></li>
+                        {% elif user.is_student %}
+                        <li class="nav_items"><a class="nav-link1" href="{% url 'adminViewChange' view_id="teacher" %}">View as Teacher</a></li>
+                        {% endif %}
+                    {% endif %} 
+
+                    {% if not user.is_authenticated %}
+                        <li class="nav_items"><a href="{% url 'login' %}" class="nav-link1">Login</a></li>
+                </ul>
+                
+                    {% else %}
+                </ul>
+                    <div class="btn-group pull-right">
+                        <button type="button" class="form-control btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            {{ user.first_name }} {{ user.last_name }}<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{% url 'resetPassword' %}">Reset password</a></li>
+                        </ul>
+                    </div>
+                    {% endif %} 
+                    
+            </div>
+        </div>
+    </nav>
+      
+    {% comment %}
+ <!-- <li class="nav-item">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    User: {{ user.get_username }}
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+                </li>
+                {% endif %}
+            </li> -->
+            {% endcomment %}
+  <div class="col-sm-10 ">
+  {% block content %}{% endblock %}
+
+  {% block pagination %}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+  {% endblock %}
+
+  </div>
+  
+
+</div>
+</div>
+</body>
+</html>
